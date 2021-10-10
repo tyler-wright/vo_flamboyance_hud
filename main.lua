@@ -13,12 +13,12 @@ Mode ideas
 (2) Health Mode: Green for 100% health and progressively going through yellow and then red as your HP decreases TODO: Event doesnt work on login
 (3) Random mode: Gives you a random colour every time you undock
 (4) Nebula Contrast Mode: Sets a different colour depending on the system you are in to contrast the nebula (example: Dau - 120 255 120) TODO
-(5) Nebula complement mode: same as contrast mode except matches the nebula colour (example: Pelatus - 190 255 190, sedina 190 190 255) TODO 
+(5) Nebula complement mode: same as contrast mode except matches the nebula colour (example: Pelatus - 190 255 190, sedina 190 190 255) TODO
 (6) Ship colour mode: HUD colour conforms to the colour of the ship you're flying
 (7) Warranty Sales Streak mode: Starts out white but gets progressively redder as you earn a larger kill streak, suggested by Savet TODO
 (8) Race mode: Blue for Itani, Yellow for UIT, Red for Serco TODO: Events arent working for this one, doesnt load race on login
 (9) Custom mode: sets HUD to custom palette
-(10) Faction space mode: set HUD colour based on whos faction space you are in 
+(10) Faction space mode: set HUD colour based on whos faction space you are in
 
 Also maybe NFZ unique colour when you enter a NFZ or maybe a mode that flashes when you take damage to replace the damage flash TODO: Investigate if this will work
 
@@ -99,54 +99,61 @@ flamboyance.loadsettings = function()
 	flamboyance.settings = unspickle(LoadSystemNotes(flamboyance.settingsID))
 	local currentmode = flamboyance.settings.mode
 	if currentmode == 1 then
-		
 	elseif currentmode == 2 then
 		flamboyance.healthmode()
 		RegisterEvent(flamboyance.healthhit, "PLAYER_GOT_HIT")
 		RegisterEvent(flamboyance.healthhit, "LEAVING_STATION")
-		if flamboyance.settings.newrecticles == true then flamboyance.newrecticles() end
+		if flamboyance.settings.newrecticles == true then
+			flamboyance.newrecticles()
+		end
 	elseif currentmode == 3 then
 		flamboyance.randommode()
 		RegisterEvent(flamboyance.randommode, "LEAVING_STATION")
-		if flamboyance.settings.newrecticles == true then flamboyance.newrecticles() end
+		if flamboyance.settings.newrecticles == true then
+			flamboyance.newrecticles()
+		end
 	elseif currentmode == 4 then
-
 	elseif currentmode == 5 then
-
 	elseif currentmode == 6 then
-		  flamboyance.makeshipcolour()
-		  RegisterEvent(flamboyance.makeshipcolour, "LEAVING_STATION")
-		  if flamboyance.settings.newrecticles == true then flamboyance.newrecticles() end
+		flamboyance.makeshipcolour()
+		RegisterEvent(flamboyance.makeshipcolour, "LEAVING_STATION")
+		if flamboyance.settings.newrecticles == true then
+			flamboyance.newrecticles()
+		end
 	elseif currentmode == 7 then
-
 	elseif currentmode == 8 then
 		flamboyance.racemode()
-		if flamboyance.settings.newrecticles == true then flamboyance.newrecticles() end
+		if flamboyance.settings.newrecticles == true then
+			flamboyance.newrecticles()
+		end
 		RegisterEvent(flamboyance.racemode, "SECTOR_LOADED")
 	elseif currentmode == 9 then
 		if (flamboyance.settings.custom) then
-		flamboyance.make(flamboyance.settings.custom)
-		if flamboyance.settings.newrecticles == true then flamboyance.newrecticles() end
+			flamboyance.make(flamboyance.settings.custom)
+			if flamboyance.settings.newrecticles == true then
+				flamboyance.newrecticles()
+			end
 		end
 	elseif currentmode == 10 then
 		flamboyance.factionspace()
 		RegisterEvent(flamboyance.factionspace, "SECTOR_LOADED")
-		if flamboyance.settings.newrecticles == true then flamboyance.newrecticles() end
+		if flamboyance.settings.newrecticles == true then
+			flamboyance.newrecticles()
+		end
 	end
 end
 
 -- Control System
-
-function flamboyance.control(_,args)
-	if (args~=nil) then
+function flamboyance.control(_, args)
+	if (args ~= nil) then
 		flamboyance.clearmodes()
-		if (args[2]~=nil and args[3]~=nil) then
+		if (args[2] ~= nil and args[3] ~= nil) then
 			local red = tonumber(args[1])
 			local green = tonumber(args[2])
 			local blue = tonumber(args[3])
 			if ((red >= 0 and red <= 255) and (green >= 0 and green <= 255) and (blue >= 0 and blue <= 255)) then
 				flamboyance.clearmodes()
-				flamboyance.settings.custom = {args[1],args[2],args[3]}
+				flamboyance.settings.custom = {args[1], args[2], args[3]}
 				flamboyance.settings.mode = 9
 				if args[4] == "new" then
 					flamboyance.newrecticles()
@@ -154,7 +161,7 @@ function flamboyance.control(_,args)
 				end
 				flamboyance.savesettings()
 				flamboyance.make(args)
- 				flamboyance.fixtargetless()
+				flamboyance.fixtargetless()
 			else
 				print("\127DBE3DEHUD: Invalid RGB Value, enter 3 values between 0 and 255")
 			end
@@ -196,7 +203,8 @@ function flamboyance.control(_,args)
 			flamboyance.savesettings()
 			flamboyance.factionspace()
 			RegisterEvent(flamboyance.factionspace, "SECTOR_LOADED")
-		elseif args[1] == "fresh" then --fresh mode (like random except generates a random colour and saves it permanently, doesnt change on undock)
+		elseif args[1] == "fresh" then
+			--fresh mode (like random except generates a random colour and saves it permanently, doesnt change on undock)
 			local random_table = flamboyance.generate_random_table()
 			flamboyance.settings.custom = random_table
 			flamboyance.settings.mode = 9
@@ -216,7 +224,6 @@ function flamboyance.control(_,args)
 			flamboyance.savesettings()
 			flamboyance.racemode()
 		end
-
 	end
 end
 
